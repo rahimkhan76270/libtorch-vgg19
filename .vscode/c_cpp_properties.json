@@ -7,6 +7,7 @@
                 "/home/rahim-khan/libtorch/include",
                 "/home/rahim-khan/libtorch/include/torch/csrc/api/include",
                 "/home/rahim-khan/libtorch/include/torch/csrc/api/include/torch",
+                "/usr/include/opencv4",
                 "/home/rahim-khan/Work/libtorch-vgg19/include"
             ],
             "defines": [],
