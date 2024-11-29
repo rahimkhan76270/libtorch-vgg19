@@ -6,12 +6,12 @@
 #include <iostream>
 #include <unordered_map>
 
-int main() {
+int main(int argc, char* argv[]) {
     std::unordered_map<int,std::string> class_label;
     auto model=std::make_shared<VGGImpl>();
     std::string path="/home/rahim-khan/Work/libtorch-vgg19/vgg19.pt";
     std::string class_file="/home/rahim-khan/Work/libtorch-vgg19/classes.txt";
-    std::string img_path="/home/rahim-khan/Downloads/Designer.png";
+    std::string img_path=argv[1];
     torch::load(model,path);
     model->eval();
     std::ifstream file(class_file);
@@ -26,19 +26,9 @@ int main() {
         i++;
     }
     file.close();
-    torch::Tensor input = torch::randn({1, 3, 224, 224});
-
-    torch::Tensor output = model->forward(input);
-
-    // Print output shape
-    std::cout << "Class " << output.softmax(-1).argmax() << std::endl;
-    for(auto pr:class_label)
-    {
-        std::cout<<pr.first<<" "<<pr.second<<std::endl;
-        break;
-    }
-
     auto img=read_img_to_tensor(img_path);
-    std::cout<<img<<std::endl;
+    torch::Tensor output = model->forward(img.unsqueeze(0));
+    std::cout<<class_label[output.softmax(-1).argmax().item<int>()]<<std::endl;
+    // std::cout<<img.sizes()<<std::endl;
     return 0;
 }
